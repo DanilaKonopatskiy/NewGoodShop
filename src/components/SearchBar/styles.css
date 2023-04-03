@@ -1,0 +1,3 @@
+.MuiTextField-root input::-webkit-clear-button {
+    display: none;
+}

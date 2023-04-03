@@ -1,0 +1,15 @@
+.menu-item {
+    width: 100%;
+    height: 100%;
+}
+
+.menu-items a {
+    display: block;
+    height: 100%;
+    padding: 12px 20px;
+    transition: 0.2s all;
+}
+
+.menu-items a:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
