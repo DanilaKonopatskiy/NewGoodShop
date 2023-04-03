@@ -35,14 +35,3 @@ export const registerUser = createAsyncThunk(
 		}
 	}
 );
-
-export const logoutUser = createAsyncThunk(
-	'auth/logoutUser',
-	async (payload, thunkAPI) => {
-		try {
-			return await new AuthServiceApi().logout();
-		} catch (e) {
-			return thunkAPI.rejectWithValue('Something went wrong');
-		}
-	}
-);

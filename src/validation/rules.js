@@ -20,8 +20,7 @@ const RULES = {
 		.max(24, RULES_MESSAGES.max(24)),
 
 	gender: string()
-		.oneOf(['female', 'male', 'other'])
-		.nullable(),
+		.oneOf(['female', 'male', 'other']),
 
 	interests: array()
 		.min(2, RULES_MESSAGES.interests),

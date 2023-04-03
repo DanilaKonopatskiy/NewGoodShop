@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, logoutUser, registerUser } from "../actions-creators/auth.actions";
+import { loginUser, registerUser } from "../actions-creators/auth.actions";
 
 export const initialState = {
     isLoading: false,
@@ -19,15 +19,21 @@ const slice = createSlice({
         },
     },
     extraReducers: {
-        [loginUser.pending.type]: (state) => {
+        [loginUser.pending.type]: (state, action) => {
             state.isLoading = true;
             state.error = '';
         },
         [loginUser.fulfilled.type]: (state, action) => {
             state.isLoading = false;
+            state.error = '';
             state.isAuthed = !!action.payload.token;
             state.token = action.payload.token;
             state.login = action.payload.login;
+
+            // localStorage.setItem('auth', JSON.stringify({
+            //     login: state.login,
+            //     token: state.token,
+            // }));
         },
         [loginUser.rejected.type]: (state, action) => {
             state.isLoading = false;
@@ -42,26 +48,15 @@ const slice = createSlice({
             state.isLoading = true;
             state.error = '';
         },
-        [registerUser.fulfilled.type]: (state) => {
+        [registerUser.fulfilled.type]: (state, action) => {
             state.isLoading = false;
+            state.error = '';
         },
         [registerUser.rejected.type]: (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         },
-        [logoutUser.pending.type]: (state) => {
-            state.isLoading = true;
-        },
-        [logoutUser.fulfilled.type]: (state) => {
-            Object.keys(initialState).forEach((key) => {
-               state[key] = initialState[key];
-            });
-        },
-        [logoutUser.rejected.type]: (state, action) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
-    },
+    }
 });
 
 export default slice;
