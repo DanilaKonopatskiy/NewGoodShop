@@ -1,9 +1,11 @@
-import { Box, Container, Grid } from '@mui/material';
-import { GoodCategory, ImagesSlider, ItemsList, ItemsMenu, Loader, MainFooter, MainHeader } from '../components';
+import { GoodCategory, ImagesSlider } from '../components';
 
 import townImage from '../assets/town.jpeg';
 import manImage from '../assets/man.jpg';
 import bedImage from '../assets/bed.png';
+import { useEffect, useState } from "react";
+import { CategoriesServiceApi } from "../api/CategoiesService.api";
+import { Grid } from "@mui/material";
 
 const images = [
 	{ id: 1, src: townImage, title: 'Самые высокие весенние скидки 20%', text: 'Новые модели уже в продаже' },
@@ -12,28 +14,38 @@ const images = [
 ];
 
 const MainPage = () => {
-	const nikes = require('../data/sneakers.json');
-	console.log('Nikes', nikes)
+	const [popularCategories, setPopularCategories] = useState([]);
+	useEffect(() => {
+		new CategoriesServiceApi()
+			.getPopularCategories()
+			.then((categories) => {
+				setPopularCategories(categories);
+			});
+	}, []);
+
 	return (
-		<Grid className='page' style={{ height: '100%' }}>
-			<Grid
-				item
-				display="grid"
-				gridTemplateColumns="repeat(12, 1fr)"
-				sm={12}
-				pt={2}
-				maxHeight={400}
-			>
-				<Box gridColumn="span 2">
-					<ItemsMenu/>
-				</Box>
-				<Box gridColumn="span 10" pr={2} pl={2}>
-					<ItemsList />
-					<GoodCategory items={nikes} />
-				</Box>
-			</Grid>
-			<Loader initial={true}/>
-		</Grid>
+		<>
+			<ImagesSlider
+				images={images}
+				delay={4000}
+				style={{
+					marginBottom: '20px',
+				}}
+			/>
+			{
+				popularCategories.map((category) => (
+					<GoodCategory
+						key={category.category.categoryTypeId}
+						category={category.category}
+						items={category.items}
+						itemsInCategory={3}
+						style={{
+							marginBottom: '20px',
+						}}
+					/>
+				))
+			}
+		</>
 	);
 };
 

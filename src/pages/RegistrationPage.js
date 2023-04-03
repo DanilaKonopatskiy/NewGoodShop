@@ -296,11 +296,10 @@ const RegistrationPage = () => {
 							<RadioGroup
 								row
 								disabled={authState.isLoading}
-								{...register('gender')}
 							>
-								<FormControlLabel disabled={authState.isLoading} value="male" control={<Radio/>} label="Male"/>
-								<FormControlLabel disabled={authState.isLoading} value="female" control={<Radio/>} label="Female"/>
-								<FormControlLabel disabled={authState.isLoading} value="other" control={<Radio/>} label="Other"/>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="male" control={<Radio/>} label="Male"/>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="female" control={<Radio/>} label="Female"/>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="other" control={<Radio/>} label="Other"/>
 							</RadioGroup>
 						</Grid>
 						<Grid item xs={12}>

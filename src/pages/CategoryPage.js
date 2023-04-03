@@ -46,46 +46,35 @@ const CategoryPage = () => {
 	}, [cartState.isLoading]);
 
 	return (
-		<Grid
-			item
-			display="grid"
-			gridTemplateColumns="repeat(12, 1fr)"
-			sm={12}
-			pt={2}
-			maxHeight={400}
-		>
-			<Box gridColumn="span 2">
-				<ItemsMenu />
-			</Box>
-			<Box gridColumn="span 10" pr={2} pl={2}>
-				<Breadcrumbs>
-					<Link underline="hover" color="inherit" to="/">
-						Main
-					</Link>
-					<Typography color="text.primary">Categories</Typography>
-					<Typography color="text.primary">{categoryName}</Typography>
-				</Breadcrumbs>
-				<Grid style={{
-					marginTop: '20px',
-					alignItems: 'center',
-				}}>
-					{
-						goodsLoading ? <Grid>
-							<Typography component="body1" fontSize={26}>Goods Loading</Typography>
-							<CircularProgress size={24} color="inherit" style={{ marginLeft: '20px' }} />
-						</Grid> : <ItemsList
-							items={goods}
-							itemsMax={10}
-							maxInRow={2}
-							Component={(props) => <MyCard
-								onCardAdd={handleCartAddClick}
-								{...props}
-							/>}
-						/>
-					}
-				</Grid>
-			</Box>
-		</Grid>
+		<>
+			<Breadcrumbs>
+				<Link underline="hover" color="inherit" to="/">
+					Main
+				</Link>
+				<Typography color="text.primary">Categories</Typography>
+				<Typography color="text.primary">{categoryName}</Typography>
+			</Breadcrumbs>
+			<Grid style={{
+				marginTop: '20px',
+				alignItems: 'center',
+			}}>
+				{
+					goodsLoading ? <Grid>
+						<Typography component="body1" fontSize={26}>Goods Loading</Typography>
+						<CircularProgress size={24} color="inherit" style={{ marginLeft: '20px' }} />
+					</Grid> : <ItemsList
+						items={goods}
+						itemsMax={10}
+						maxInRow={2}
+						linkPrefix={`/categories/${categoryType}`}
+						Component={(props) => <MyCard
+							onCardAdd={handleCartAddClick}
+							{...props}
+						/>}
+					/>
+				}
+			</Grid>
+		</>
 	);
 };
 

@@ -1,19 +1,25 @@
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Grid, IconButton, Typography } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { formatPrice } from "../../helpers/basic";
 
 export const CartItem = ({
 	orderId,
 	data: { count, good, id },
-	onPlus,
-	onMinus,
+	onChange,
 	onDelete,
 	...props
 }) => {
 	return (
 		<Card {...props} elevation={3}>
 			<CardMedia
+				component="img"
+				height="100"
 				image={good.img}
-				title={good.label}
+				alt={good.label}
+				style={{
+					objectFit: 'cover',
+				}}
 			/>
 			<CardContent>
 				<Grid justifyContent="space-between" display="flex">
@@ -61,8 +67,19 @@ export const CartItem = ({
 					<Box gridColumn="span 4">
 						<Typography component="h2" fontWeight="bold" fontSize={18}>Count</Typography>
 					</Box>
-					<Box gridColumn="span 8">
+					<Box gridColumn="span 8" display="flex" alignItems="center">
+						<IconButton
+							onClick={() => {
+								onChange({ good, count: count - 1 });
+							}}
+						><RemoveCircleIcon /></IconButton>
 						<Typography component="h2" fontWeight="bold" fontSize={18}>{count}</Typography>
+						<IconButton
+							onClick={() => {
+								onChange({ good, count: count + 1 });
+							}}
+						><AddCircleIcon /></IconButton>
+						<Typography component="h2" fontWeight fontSize={18}>(If "count" is zero, the good will be automatically deleted)</Typography>
 					</Box>
 				</Grid>
 				<Grid item display="grid" gridTemplateColumns="repeat(12, 1fr)" mt={1}>

@@ -10,7 +10,6 @@ export class CartServiceApi {
 	}
 
 	async addToCart(product) {
-		await delay(1000);
 		return await this.#api.put('/cart', product);
 	}
 

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import './styles.css';
 
 export const Loader = ({ loading = false, variant, style }) => {

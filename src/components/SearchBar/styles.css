@@ -1,3 +1,25 @@
 .MuiTextField-root input::-webkit-clear-button {
     display: none;
 }
+
+.results {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 8px gray;
+    max-height: 350px;
+    z-index: 4;
+}
+
+.results a {
+    display: block;
+    height: 100%;
+    padding: 15px 30px;
+    transition: 0.2s all;
+}
+
+.results a:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}

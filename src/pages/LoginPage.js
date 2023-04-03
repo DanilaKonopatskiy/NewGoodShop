@@ -101,13 +101,13 @@ const LoginPage = () => {
 					</ApiButton>
 					<Grid container>
 						<Grid item xs>
-							<Link to="#" variant="body2">
-								Forgot password?
+							<Link to="/" variant="body2">
+								Go to Main Page
 							</Link>
 						</Grid>
 						<Grid item>
 							<Link to="/registration" variant="body2">
-								{"Don't have an account? Sign Up"}
+								Don't have an account? Sign Up
 							</Link>
 						</Grid>
 					</Grid>

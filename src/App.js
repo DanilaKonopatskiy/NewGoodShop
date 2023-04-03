@@ -2,12 +2,11 @@ import { Component, lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
-import './App.css';
-import { Loader, withPageWrapper } from "./components";
+import { withPageWrapper } from "./components";
 import { SnackbarProvider } from "notistack";
 import { Protection } from "./components/Protection";
 import { runInterceptors } from "./api/inteceptors";
+import { CircularProgress } from "@mui/material";
 
 const MainPage = lazy(() => import('./pages/MainPage'))
 const CartPage = lazy(() => import('./pages/CartPage'));
@@ -19,7 +18,7 @@ const GoodPage = lazy(() => import('./pages/GoodPage'));
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: withPageWrapper(<MainPage/>),
+		element: withPageWrapper(<MainPage/>, { extended: true }),
 	},
 	{
 		path: '/cart',
@@ -44,11 +43,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/categories/:categoryType',
-		element: withPageWrapper(<CategoryPage/>),
+		element: withPageWrapper(<CategoryPage/>, { extended: true }),
 	},
 	{
 		path: '/categories/:categoryType/:goodId',
-		element: withPageWrapper(<GoodPage/>)
+		element: withPageWrapper(<GoodPage/>, { extended: true }),
 	},
 ]);
 
@@ -57,11 +56,13 @@ class App extends Component {
 		runInterceptors();
 	}
 
+	componentDidCatch(error, errorInfo) {}
+
 	render() {
 		return (
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<SnackbarProvider maxSnack={5}>
-					<Suspense fallback={<Loader loading={true}/>}>
+					<Suspense fallback={<CircularProgress color="inherit" size={24} />}>
 						<RouterProvider router={router}/>
 					</Suspense>
 				</SnackbarProvider>

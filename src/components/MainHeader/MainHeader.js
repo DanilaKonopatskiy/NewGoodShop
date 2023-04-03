@@ -3,12 +3,13 @@ import { Badge, Button, Container, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ReactComponent as NikeSvg } from '../../assets/nike.svg';
 import { SearchBar } from "../SearchBar";
-
-import './styles.css';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/actions-creators/auth.actions";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router";
+
+import './styles.css';
+import { ApiButton } from "../ApiButton";
 
 export const MainHeader = () => {
 	const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const MainHeader = () => {
 	const cartState = useSelector((state) => state.cart);
 	const [isClicked, setIsClicked] = useState(false);
 	const { enqueueSnackbar } = useSnackbar();
-	const { isAuthed, isLoading } = useSelector((state) => state.auth);
+	const { isAuthed, isLoading: isAuthLoading } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		if (!isAuthed && isClicked) {
@@ -24,7 +25,7 @@ export const MainHeader = () => {
 			setIsClicked(false);
 			navigate('/');
 		}
-	}, [isLoading, isClicked]);
+	}, [isAuthLoading, isClicked]);
 
 	const handleLogOut = () => {
 		setIsClicked(true);
@@ -35,7 +36,9 @@ export const MainHeader = () => {
 		<Grid container className='header' pt={2} pb={2} sx={{ boxShadow: '0 3px 4px lightgray' }}>
 			<Container sx={{ display: 'flex' }}>
 				<Grid item sm={2}>
-					<NikeSvg />
+					<Link to='/'>
+						<NikeSvg />
+					</Link>
 				</Grid>
 				<Grid item sm={8}>
 					<SearchBar/>
@@ -50,14 +53,15 @@ export const MainHeader = () => {
 						!isAuthed && <Link
 							to="/login"
 							className="link"
-						>Войти</Link>
+						>Log In</Link>
 					}
 					{
-						isAuthed && <Button
+						isAuthed && <ApiButton
 							onClick={handleLogOut}
 							variant="contained"
 							color="secondary"
-						>Выйти</Button>
+							loading={isAuthLoading}
+						>Log Out</ApiButton>
 					}
 					{
 						isAuthed && (
@@ -69,7 +73,7 @@ export const MainHeader = () => {
 								<Link
 									to="/cart"
 									className="link"
-								>Корзина</Link>
+								>Cart</Link>
 							</Badge>
 						)
 					}

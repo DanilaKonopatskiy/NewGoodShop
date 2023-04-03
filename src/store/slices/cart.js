@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, logoutUser, registerUser } from "../actions-creators/auth.actions";
 import { addToCart, clearCart, getCart } from "../actions-creators/cart.actions";
 
 export const initialState = {

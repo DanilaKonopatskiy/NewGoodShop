@@ -12,6 +12,7 @@ export class AuthServiceApi {
 
 		return AuthServiceApi.instance;
 	}
+
 	async login(values) {
 		await delay(1500);
 		return await this.#api.post('/login', values);
@@ -22,7 +23,7 @@ export class AuthServiceApi {
 		return await this.#api.post('/registration', values);
 	}
 
-	async logout(values) {
+	async logout() {
 		await delay(1200);
 	}
 }

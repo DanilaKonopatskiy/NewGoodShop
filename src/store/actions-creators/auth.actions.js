@@ -1,19 +1,6 @@
 import { AuthServiceApi } from "../../api/AuthService.api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// export const loginUser = (data) => async (dispatch) => {
-// 	const authService = new AuthServiceApi();
-// 	try {
-// 		dispatch(() => AuthSlice.actions.setLoading(true));
-//
-// 		const response = await authService.login(data);
-// 		console.log('response: ', response);
-// 		dispatch(() => AuthSlice.actions.setLoading(false));
-// 	} catch (error) {
-// 		console.log('error: ', error);
-// 	}
-// };
-
 export const loginUser = createAsyncThunk(
 	'auth/loginUser',
 	async (payload, thunkAPI) => {

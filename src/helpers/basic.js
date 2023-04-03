@@ -10,3 +10,12 @@ export function delay(ms = 2000) {
 		setTimeout(res, ms);
 	});
 }
+
+export const repeat = (num, value, sep) => {
+	let res = '';
+	for (let i = 0; i < num; i++) {
+		res += value;
+		if (i !== num - 1) res += sep;
+	}
+	return res;
+}

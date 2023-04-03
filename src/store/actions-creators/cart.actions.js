@@ -25,9 +25,11 @@ export const addToCart = createAsyncThunk(
 
 export const clearCart = createAsyncThunk(
 	'cart/clearCart',
-	async (payload, thunkAPI) => {
+	async (cb, thunkAPI) => {
 		try {
-			return await new CartServiceApi().clearCart();
+			const result = await new CartServiceApi().clearCart();
+			cb();
+			return result;
 		} catch (e) {
 			return thunkAPI.rejectWithValue(e.message);
 		}

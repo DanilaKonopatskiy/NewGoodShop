@@ -1,18 +1,19 @@
 import { Grid, Box, CardContent, Card, Typography, CardActions, Button, Divider } from '@mui/material';
-import { GoodCategory, ItemsList, ItemsMenu, Loader } from "../components";
+import { ItemsList, ItemsMenu } from "../components";
 import { useEffect, useMemo, useState } from "react";
-import { CartServiceApi } from "../api/CartService.api";
 import { CartItem } from "../components/CartItem";
 import { formatPrice } from "../helpers/basic";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, getCart } from "../store/actions-creators/cart.actions";
+import { addToCart, clearCart, getCart } from "../store/actions-creators/cart.actions";
 import { useSnackbar } from "notistack";
 import { cartActions } from "../store";
+import { ApiButton } from "../components/ApiButton";
 
 const CartPage = () => {
 	const dispatch = useDispatch();
 	const { enqueueSnackbar } = useSnackbar();
-	const { items, error } = useSelector((state) => state.cart);
+	const { items, error, isLoading } = useSelector((state) => state.cart);
+	const [isBuying, setIsBuying] = useState(false);
 
 	const totalPrice = useMemo(() => {
 		return items.reduce((acc, item) => {
@@ -20,6 +21,28 @@ const CartPage = () => {
 			return acc;
 		}, 0);
 	}, [items]);
+
+	const handleClearCart = () => {
+		if (!items.length) {
+			return enqueueSnackbar('Cart is already empty', { variant: 'warning', autoHideDuration: 3000 });
+		}
+		dispatch(clearCart());
+	};
+
+	const handleChangeCartItem = (data) => {
+		dispatch(addToCart(data));
+	};
+
+	const handleBuyCart = () => {
+		if (!items.length) {
+			return enqueueSnackbar("There's nothing to buy", { variant: 'warning', autoHideDuration: 3000 });
+		}
+		setIsBuying(true);
+		dispatch(clearCart(() => {
+			setIsBuying(false);
+			enqueueSnackbar('Payment went successfully! Thank you', { variant: 'success', autoHideDuration: 3000 });
+		}));
+	}
 
 	useEffect(() => {
 		if (!items.length && error) {
@@ -47,7 +70,7 @@ const CartPage = () => {
 					{
 						items.length ? <ItemsList
 							items={items}
-							Component={CartItem}
+							Component={(props) => <CartItem onChange={handleChangeCartItem} {...props} />}
 							maxInRow={1}
 						/> : <Typography component="h1" fontSize={24}>No cart items</Typography>
 					}
@@ -80,16 +103,21 @@ const CartPage = () => {
 					</Grid>
 					<Grid container justifyContent="space-between" mt={2}>
 						<Grid>
-							<Button
+							<ApiButton
 								color="error"
 								variant="contained"
-							>Clear Cart</Button>
+								onClick={handleClearCart}
+								loading={!isBuying && isLoading}
+							>Clear Cart</ApiButton>
 						</Grid>
 						<Grid>
-							<Button
+							<ApiButton
 								color="secondary"
 								variant="contained"
-							>Buy Now ({items.length})</Button>
+								disabled={isLoading}
+								loading={isBuying && isLoading}
+								onClick={handleBuyCart}
+							>Buy Now ({items.length})</ApiButton>
 						</Grid>
 					</Grid>
 				</Box>

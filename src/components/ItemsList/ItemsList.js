@@ -1,18 +1,10 @@
-import { MyCard } from "../MyCard";
-
-const repeat = (num, value, sep) => {
-	let res = '';
-	for (let i = 0; i < num; i++) {
-		res += value;
-		if (i !== num - 1) res += sep;
-	}
-	return res;
-}
+import { repeat } from "../../helpers/basic";
 
 export const ItemsList = ({
 	Component,
 	itemsMax,
 	maxInRow,
+	linkPrefix,
 	items = [],
 	style = {},
 }) => {
@@ -29,13 +21,16 @@ export const ItemsList = ({
 			style={{
 				display: "grid",
 				gridTemplateColumns: repeat(maxInRow, '1fr', ' '),
-				// gridTemplateRows: repeat(Math.ceil(filteredByMax.length / maxInRow), 'auto', ' '),
-				gap: '40px',
+				gap: '30px',
 				...style,
 			}}
 		>
 			{filteredByMax.map((item, index) => (
-				<Component data={item} key={'id' in item ? item.id : index} orderId={index} />
+				<Component
+					data={item}
+					key={'id' in item ? item.id : index}
+					link={linkPrefix ? `${linkPrefix}/${item.id}` : `/${item.id}`}
+				/>
 			))}
 		</div>
 	);
