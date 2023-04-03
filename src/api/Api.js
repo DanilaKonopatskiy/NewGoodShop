@@ -1,14 +1,10 @@
+import { Singleton } from "./Singleton";
+
 export class Api {
 	#prefix = '/api';
 
 	get(route) {
-		return fetch(this.#prefix + route, {
-			method: 'GET',
-			body: null,
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then(resp => {
+		return fetch(this.#prefix + route).then(resp => {
 			if (resp.ok) return resp.json();
 			else throw new Error(resp._bodyText);
 		});
@@ -27,24 +23,11 @@ export class Api {
 		});
 	}
 
-	put(route, data) {
-		return fetch(this.#prefix + route, {
-			method: 'PUT',
-			body: JSON.stringify(data),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		}).then(resp => {
-			if (resp.ok) return resp.json();
-			else throw new Error(resp._bodyText);
-		});
+	put() {
+
 	}
 
 	delete() {
 
-	}
-
-	convertToQuery(object) {
-		return `?${new URLSearchParams(object).toString()}`;
 	}
 }

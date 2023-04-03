@@ -1,4 +1,4 @@
-export * from './MyCard';
+export * from './NikeCard';
 export * from './GoodCategory';
 export * from './ItemsMenu';
 export * from './MainFooter';

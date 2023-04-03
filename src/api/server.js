@@ -137,8 +137,6 @@ createServer({
 	factories: {
 		good: Factory.extend({
 			label: () => faker.commerce.productName(),
-			adjective: () => faker.commerce.productAdjective(),
-			material: () => faker.commerce.productMaterial(),
 			price: () => faker.commerce.price(1, 1000),
 			description: () => faker.commerce.productDescription(),
 			img: 'https://source.unsplash.com/random',
@@ -147,15 +145,15 @@ createServer({
 
 	seeds(server) {
 		const CATEGORIES = [
-			{ categoryTypeId: 1, type: 'new_arrivals', label: 'New Arrivals' },
-			{ categoryTypeId: 2, type: 'featured', label: 'Featured' },
-			{ categoryTypeId: 3, type: 'all_shoes', label: 'All Shoes' },
-			{ categoryTypeId: 4, type: 'all_clothing', label: 'All Clothing' },
-			{ categoryTypeId: 5, type: 'all_tops', label: 'All Tops' },
-			{ categoryTypeId: 6, type: 'all_bottoms', label: 'All Bottoms' },
-			{ categoryTypeId: 7, type: 'shop_by_sport', label: 'Shop By Sport' },
-			{ categoryTypeId: 8, type: 'all_accessories', label: 'All Accessories' },
-			{ categoryTypeId: 9, type: 'drops', label: 'Drops' },
+			{ type: 'new_arrivals', label: 'New Arrivals' },
+			{ type: 'featured', label: 'Featured' },
+			{ type: 'all_shoes', label: 'All Shoes' },
+			{ type: 'all_clothing', label: 'All Clothing' },
+			{ type: 'all_tops', label: 'All Tops' },
+			{ type: 'all_bottoms', label: 'All Bottoms' },
+			{ type: 'shop_by_sport', label: 'Shop By Sport' },
+			{ type: 'all_accessories', label: 'All Accessories' },
+			{ type: 'drops', label: 'Drops' },
 		];
 
 		CATEGORIES.forEach((category) => {
@@ -232,7 +230,7 @@ createServer({
 
 			if (errors.length) {
 				return new Response(RESPONSE_CODES.BAD_REQUEST, DEFAULT_HEADERS, errors)
-			}
+			};
 
 			return schema.goods.create(product);
 		});
@@ -258,7 +256,7 @@ createServer({
 
 			if (errors.length) {
 				return new Response(RESPONSE_CODES.BAD_REQUEST, DEFAULT_HEADERS, errors)
-			}
+			};
 
 			const { id, ...restProduct } = product;
 
@@ -287,7 +285,7 @@ createServer({
 
 				if (errors.length) {
 					return new Response(RESPONSE_CODES.BAD_REQUEST, DEFAULT_HEADERS, errors)
-				}
+				};
 
 				const goodInCart = schema.carts.where({ productId: product.good.id });
 
@@ -312,7 +310,7 @@ createServer({
 
 			if (errors.length) {
 				return new Response(RESPONSE_CODES.BAD_REQUEST, DEFAULT_HEADERS, errors)
-			}
+			};
 
 			const user = schema.users.findBy(credentials);
 
@@ -337,7 +335,7 @@ createServer({
 
 			if (errors.length) {
 				return new Response(RESPONSE_CODES.BAD_REQUEST, {}, errors)
-			}
+			};
 
 			const currentUser = schema.users.where({ login: credentials.login });
 

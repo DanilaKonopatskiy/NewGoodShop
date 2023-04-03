@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/actions-creators/auth.actions";
 import { useSnackbar } from "notistack";
 import { ApiButton } from "../components/ApiButton";
+import AuthSlice from "../store/slices/auth";
 import { useNavigate } from "react-router";
-import { authActions } from "../store";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -30,10 +30,10 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		if (authState.error) {
-			enqueueSnackbar(authState.error, { variant: 'error', autoHideDuration: 3000 });
-			dispatch(authActions.clearError());
+			enqueueSnackbar(authState.error, { variant: 'error' });
+			dispatch(AuthSlice.actions.clearError());
 		} else if (authState.isAuthed) {
-			enqueueSnackbar('Successfully authorized', { variant: 'success', autoHideDuration: 3000 });
+			enqueueSnackbar('Successfully authorized', { variant: 'success' });
 			navigate('/');
 		}
 	}, [authState.isLoading]);
