@@ -1,3 +1,5 @@
+import { MyCard } from "../MyCard";
+
 const repeat = (num, value, sep) => {
 	let res = '';
 	for (let i = 0; i < num; i++) {
@@ -27,13 +29,13 @@ export const ItemsList = ({
 			style={{
 				display: "grid",
 				gridTemplateColumns: repeat(maxInRow, '1fr', ' '),
-				gridTemplateRows: repeat(Math.ceil(filteredByMax.length / maxInRow), 'auto', ' '),
-				gap: '20px',
+				// gridTemplateRows: repeat(Math.ceil(filteredByMax.length / maxInRow), 'auto', ' '),
+				gap: '40px',
 				...style,
 			}}
 		>
 			{filteredByMax.map((item, index) => (
-				<Component data={item} key={'id' in item ? item.id : index} />
+				<Component data={item} key={'id' in item ? item.id : index} orderId={index} />
 			))}
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { Component, lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -7,6 +7,7 @@ import './App.css';
 import { Loader, withPageWrapper } from "./components";
 import { SnackbarProvider } from "notistack";
 import { Protection } from "./components/Protection";
+import { runInterceptors } from "./api/inteceptors";
 
 const MainPage = lazy(() => import('./pages/MainPage'))
 const CartPage = lazy(() => import('./pages/CartPage'));
@@ -51,16 +52,22 @@ const router = createBrowserRouter([
 	},
 ]);
 
-function App() {
-	return (
-		<LocalizationProvider dateAdapter={AdapterDayjs}>
-			<SnackbarProvider maxSnack={5}>
-				<Suspense fallback={<Loader loading={true}/>}>
-					<RouterProvider router={router}/>
-				</Suspense>
-			</SnackbarProvider>
-		</LocalizationProvider>
-	);
+class App extends Component {
+	componentDidMount() {
+		runInterceptors();
+	}
+
+	render() {
+		return (
+			<LocalizationProvider dateAdapter={AdapterDayjs}>
+				<SnackbarProvider maxSnack={5}>
+					<Suspense fallback={<Loader loading={true}/>}>
+						<RouterProvider router={router}/>
+					</Suspense>
+				</SnackbarProvider>
+			</LocalizationProvider>
+		);
+	}
 }
 
 export default App;

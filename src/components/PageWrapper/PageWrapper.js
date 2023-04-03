@@ -6,10 +6,10 @@ export const PageWrapper = ({ children }) => {
 	return (
 		<>
 			<MainHeader />
-			<Container fluid>
+			<Container>
 				{ children }
 			</Container>
-			<MainFooter />
+			{/*<MainFooter />*/}
 		</>
 	);
 };
