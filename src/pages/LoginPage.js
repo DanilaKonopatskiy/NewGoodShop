@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/actions-creators/auth.actions";
 import { useSnackbar } from "notistack";
 import { ApiButton } from "../components/ApiButton";
-import AuthSlice from "../store/slices/auth";
 import { useNavigate } from "react-router";
+import { authActions } from "../store";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -30,10 +30,10 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		if (authState.error) {
-			enqueueSnackbar(authState.error, { variant: 'error' });
-			dispatch(AuthSlice.actions.clearError());
+			enqueueSnackbar(authState.error, { variant: 'error', autoHideDuration: 3000 });
+			dispatch(authActions.clearError());
 		} else if (authState.isAuthed) {
-			enqueueSnackbar('Successfully authorized', { variant: 'success' });
+			enqueueSnackbar('Successfully authorized', { variant: 'success', autoHideDuration: 3000 });
 			navigate('/');
 		}
 	}, [authState.isLoading]);
@@ -101,13 +101,13 @@ const LoginPage = () => {
 					</ApiButton>
 					<Grid container>
 						<Grid item xs>
-							<Link to="#" variant="body2">
-								Forgot password?
+							<Link to="/" variant="body2">
+								Go to Main Page
 							</Link>
 						</Grid>
 						<Grid item>
 							<Link to="/registration" variant="body2">
-								{"Don't have an account? Sign Up"}
+								Don't have an account? Sign Up
 							</Link>
 						</Grid>
 					</Grid>

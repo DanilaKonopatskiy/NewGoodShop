@@ -24,12 +24,11 @@ import { RegistrationSchema } from "../validation/schemas";
 import { CategoriesServiceApi } from "../api/CategoiesService.api";
 import RULES_MESSAGES from "../validation/messages";
 import { useDispatch, useSelector } from "react-redux";
-import AuthSlice from '../store/slices/auth';
 import { useSnackbar } from "notistack";
 import { registerUser } from "../store/actions-creators/auth.actions";
 import { ApiButton } from "../components/ApiButton";
 import dayjs from "dayjs";
-import { Loader } from "../components";
+import { authActions } from "../store";
 
 const RegistrationPage = () => {
 	const navigate = useNavigate();
@@ -68,10 +67,10 @@ const RegistrationPage = () => {
 
 	useEffect(() => {
 		if (authState.error) {
-			enqueueSnackbar(authState.error, { variant: 'error' });
-			dispatch(AuthSlice.actions.clearError());
+			enqueueSnackbar(authState.error, { variant: 'error', autoHideDuration: 3000 });
+			dispatch(authActions.clearError());
 		} else if (!authState.error && submitCount && !authState.isLoading) {
-			enqueueSnackbar('Successfully registered', { variant: 'success' });
+			enqueueSnackbar('Successfully registered', { variant: 'success', autoHideDuration: 3000 });
 			navigate('/login');
 		}
 	}, [authState.isLoading]);
@@ -130,6 +129,7 @@ const RegistrationPage = () => {
 						control={
 							<Checkbox
 								checked={category.checked}
+								disabled={authState.isLoading}
 								onChange={(event) => {
 									setCheckedCategories((prev) => {
 										const index = prev.findIndex((item) => item.id === category.id);
@@ -160,6 +160,7 @@ const RegistrationPage = () => {
 				<Checkbox
 					checked={checkedCategories.filter((item) => !!item.checked).length === checkedCategories.length}
 					indeterminate={!!checkedCategories.find((item) => !!item.checked) && !(checkedCategories.filter((item) => !!item.checked).length === checkedCategories.length)}
+					disabled={authState.isLoading}
 					onChange={(event) => {
 						setCheckedCategories((prev) => {
 							if (!!checkedCategories.find((item) => !!item.checked)) {
@@ -221,6 +222,7 @@ const RegistrationPage = () => {
 								fullWidth
 								label="First Name"
 								autoFocus
+								disabled={authState.isLoading}
 								error={!!errors.name}
 								helperText={errors.name ? errors.name.message : ''}
 								{...register('name')}
@@ -232,6 +234,7 @@ const RegistrationPage = () => {
 								fullWidth
 								label="Last Name"
 								autoComplete="family-name"
+								disabled={authState.isLoading}
 								error={!!errors.surname}
 								helperText={errors.surname ? errors.surname.message : ''}
 								{...register('surname')}
@@ -243,6 +246,7 @@ const RegistrationPage = () => {
 								fullWidth
 								label="Email Address"
 								autoComplete="email"
+								disabled={authState.isLoading}
 								error={!!errors.email}
 								helperText={errors.email ? errors.email.message : ''}
 								{...register('login')}
@@ -255,6 +259,7 @@ const RegistrationPage = () => {
 								label="Password"
 								type="password"
 								autoComplete="new-password"
+								disabled={authState.isLoading}
 								error={!!errors.password}
 								helperText={errors.password ? errors.password.message : ''}
 								{...register('password')}
@@ -274,6 +279,7 @@ const RegistrationPage = () => {
 										onBlur={onBlur}
 										name={name}
 										ref={ref}
+										disabled={authState.isLoading}
 										minDate={dayjs('Jan 01 1930 01:00:00 GMT+0300')}
 										slotProps={{
 											textField: {
@@ -287,10 +293,13 @@ const RegistrationPage = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<FormLabel>Gender</FormLabel>
-							<RadioGroup row {...register('gender')}>
-								<FormControlLabel value="male" control={<Radio/>} label="Male"/>
-								<FormControlLabel value="female" control={<Radio/>} label="Female"/>
-								<FormControlLabel value="other" control={<Radio/>} label="Other"/>
+							<RadioGroup
+								row
+								disabled={authState.isLoading}
+							>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="male" control={<Radio/>} label="Male"/>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="female" control={<Radio/>} label="Female"/>
+								<FormControlLabel {...register('gender')} disabled={authState.isLoading} value="other" control={<Radio/>} label="Other"/>
 							</RadioGroup>
 						</Grid>
 						<Grid item xs={12}>
@@ -304,6 +313,7 @@ const RegistrationPage = () => {
 						<Grid item xs={12}>
 							<FormControlLabel
 								control={<Switch defaultChecked/>}
+								disabled={authState.isLoading}
 								label="I want to receive inspiration, marketing promotions and updates via email"
 								{...register('isSubscribed')}
 							/>
@@ -315,6 +325,7 @@ const RegistrationPage = () => {
 								label="Secret Question"
 								type="text"
 								autoComplete="secret-question"
+								disabled={authState.isLoading}
 								onInput={(event) => {
 									if (!isSecretQuestionTypeChosen && event.target.value.trim()) {
 										setIsSecretQuestionTypeChosen(true);
@@ -323,6 +334,8 @@ const RegistrationPage = () => {
 										setValue('secret.answer', '');
 									}
 								}}
+								error={!!errors['secret.type']}
+								helperText={errors['secret.type'] ? errors['secret.type'] : ''}
 								{...register('secret.type')}
 							/>
 						</Grid>
@@ -336,6 +349,9 @@ const RegistrationPage = () => {
 										label="Secret Answer"
 										type="text"
 										autoComplete="secret-answer"
+										disabled={authState.isLoading}
+										error={!!errors['secret.answer']}
+										helperText={errors['secret.answer'] ? errors['secret.answer'] : ''}
 										{...register('secret.answer')}
 									/>
 								</Grid>
@@ -349,6 +365,7 @@ const RegistrationPage = () => {
 							variant="contained"
 							sx={{ mt: 3, mb: 2 }}
 							onClick={goBackMainPage}
+							disabled={authState.isLoading}
 						>
 							Cancel
 						</Button>

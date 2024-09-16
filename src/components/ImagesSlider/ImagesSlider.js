@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './styles.css';
 
-export const ImagesSlider = ({ images, delay = 3000, initialActive = 0 }) => {
+export const ImagesSlider = ({ images, delay = 3000, initialActive = 0, ...props }) => {
     const [activeSlide, setActiveSlide] = useState(initialActive);
 
     useEffect(() => {
@@ -25,13 +25,13 @@ export const ImagesSlider = ({ images, delay = 3000, initialActive = 0 }) => {
     };
 
     return (
-        <div className="slider-wrapper">
+        <div className="slider-wrapper" {...props}>
             <div className="slider" style={styles}>
                 {
                     images.map(({ id, src, title, text }) => {
                         return (
                             <div className="slide" key={id}>
-                                <img src={src} />
+                                <img src={src} alt={title} />
                                 <p className='slider-info'>
                                     <span className='title'>{`<<${title}>>`}</span>
                                     <span className='text'>{text}</span>

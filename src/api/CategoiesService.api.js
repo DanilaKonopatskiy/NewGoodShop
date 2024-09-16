@@ -1,12 +1,15 @@
 import { Api } from "./Api";
 
 export class CategoriesServiceApi {
-	constructor() {
-		this.api = new Api();
-	}
+	#api = new Api();
 
 	async getCategories() {
-		const data = await this.api.get('/categories');
+		const data = await this.#api.get('/categories');
 		return data.categories || [];
+	}
+
+	async getPopularCategories() {
+		const data = await this.#api.get('/popular_categories');
+		return data || [];
 	}
 }
